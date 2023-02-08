@@ -15,8 +15,6 @@ builder.Services.AddSignalR();
 builder.Services.AddAuthorization();
 builder.Services.AddMemoryCache();
 
-var app = builder.Build();
-
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -36,6 +34,8 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true
     };
 });
+
+var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
