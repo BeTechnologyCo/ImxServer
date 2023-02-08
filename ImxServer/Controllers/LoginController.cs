@@ -37,7 +37,7 @@ namespace ImxServer.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost]
+        [HttpPost("CreateToken")]
         public async Task<IActionResult> CreateToken([FromBody] LoginVM login)
         {
             var user = await Authenticate(login);
