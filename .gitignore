@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# don't push setting with secret info
+/ImxServer/appsettings.Development.json
