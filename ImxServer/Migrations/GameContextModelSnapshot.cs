@@ -33,12 +33,19 @@ namespace ImxServer.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<bool>("RegisterImx")
                         .HasColumnType("boolean");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Account")
+                        .IsUnique();
+
+                    b.HasIndex("Name")
                         .IsUnique();
 
                     b.ToTable("Players");

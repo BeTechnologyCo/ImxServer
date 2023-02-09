@@ -31,11 +31,13 @@ namespace ImxServer.Models
     }
 
     [Index(nameof(Account), IsUnique = true)]
+    [Index(nameof(Name), IsUnique = true)]
     public class Player
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Account { get; set; }
+        public string Name { get; set; }
         public bool RegisterImx { get; set; }
 
     }

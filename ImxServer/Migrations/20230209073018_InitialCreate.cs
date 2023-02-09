@@ -18,6 +18,7 @@ namespace ImxServer.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Account = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     RegisterImx = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
@@ -29,6 +30,12 @@ namespace ImxServer.Migrations
                 name: "IX_Players_Account",
                 table: "Players",
                 column: "Account",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Players_Name",
+                table: "Players",
+                column: "Name",
                 unique: true);
         }
 

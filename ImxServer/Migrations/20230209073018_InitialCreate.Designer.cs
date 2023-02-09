@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ImxServer.Migrations
 {
     [DbContext(typeof(GameContext))]
-    [Migration("20230209072645_InitialCreate")]
+    [Migration("20230209073018_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -36,12 +36,19 @@ namespace ImxServer.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<bool>("RegisterImx")
                         .HasColumnType("boolean");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Account")
+                        .IsUnique();
+
+                    b.HasIndex("Name")
                         .IsUnique();
 
                     b.ToTable("Players");
