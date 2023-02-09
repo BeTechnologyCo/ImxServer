@@ -81,8 +81,11 @@ namespace ImxServer.Controllers
         private string BuildToken(string account)
         {
             var claims = new[] {
+                new Claim(JwtRegisteredClaimNames.Name, account),
             new Claim(JwtRegisteredClaimNames.Email, account),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+             new Claim(JwtRegisteredClaimNames.Iss, _config["Jwt:Issuer"]),
+              new Claim(JwtRegisteredClaimNames.Aud, _config["Jwt:Audience"])
         };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
@@ -90,7 +93,9 @@ namespace ImxServer.Controllers
 
             var token = new JwtSecurityToken(
              claims: claims,
-              expires: DateTime.Now.AddMinutes(30),
+             issuer: _config["Jwt:Issuer"],
+             audience: _config["Jwt:Audience"],
+              expires: DateTime.Now.AddMinutes(90),
               signingCredentials: creds);
 
             return new JwtSecurityTokenHandler().WriteToken(token);

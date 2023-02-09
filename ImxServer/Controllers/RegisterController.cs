@@ -1,6 +1,7 @@
 ﻿using ImxServer.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
 using Nethereum.Signer;
@@ -33,7 +34,7 @@ namespace ImxServer.Controllers
         public Player GetPlayer()
         {
             var claimsIdentity = User.Identity as ClaimsIdentity;
-            var claimAccount = claimsIdentity.FindFirst(JwtRegisteredClaimNames.Email);
+            var claimAccount = claimsIdentity.FindFirst(JwtRegisteredClaimNames.Name);
 
             var player = _dbContext.Players.Where(a => a.Account == claimAccount.Value.ToLowerInvariant()).FirstOrDefault();
 
@@ -41,10 +42,10 @@ namespace ImxServer.Controllers
         }
 
         [HttpPost("CreatePlayer")]
-        public async Task<IActionResult> CreatePlayer([FromBody] Player playerName)
+        public async Task<IActionResult> CreatePlayer([FromBody] PlayerName playerName)
         {
             var claimsIdentity = User.Identity as ClaimsIdentity;
-            var claimAccount = claimsIdentity.FindFirst(JwtRegisteredClaimNames.Email);
+            var claimAccount = claimsIdentity.FindFirst(JwtRegisteredClaimNames.Name);
 
             var player = _dbContext.Players.Where(a => a.Account == claimAccount.Value.ToLowerInvariant()).FirstOrDefault();
 
@@ -55,12 +56,14 @@ namespace ImxServer.Controllers
             }
             else
             {
-                var playerSameName = _dbContext.Players.Where(a => a.Name.ToLowerInvariant() == playerName.Name.ToLowerInvariant()).FirstOrDefault();
+                string nameLower = playerName.Name.ToLowerInvariant();
+                var playerSameName = _dbContext.Players.Where(a => EF.Functions.ILike(a.Name, $"{nameLower}")).FirstOrDefault();
 
+                var accountId = claimAccount.Value.ToLowerInvariant();
                 var playerEntity = new Player()
                 {
                     // register Account as lower
-                    Account = claimAccount.Value.ToLowerInvariant(),
+                    Account = accountId,
                     Name = playerName.Name
                 };
 
