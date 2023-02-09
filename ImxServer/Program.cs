@@ -1,5 +1,7 @@
 using ImxServer.Hubs;
+using ImxServer.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -14,6 +16,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 builder.Services.AddAuthorization();
 builder.Services.AddMemoryCache();
+
+builder.Services.AddDbContext<GameContext>(options =>
+            options.UseNpgsql(builder.Configuration.GetConnectionString("DatabaseConnection"), o => o.CommandTimeout(30)));
 
 builder.Services.AddAuthentication(options =>
 {
