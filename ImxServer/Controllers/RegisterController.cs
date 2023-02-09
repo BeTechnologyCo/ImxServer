@@ -13,14 +13,14 @@ namespace ImxServer.Controllers
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
-    public class PlayerController : ControllerBase
+    public class RegisterController : ControllerBase
     {
         private IConfiguration _config;
         private readonly IMemoryCache _cache;
-        private readonly ILogger<PlayerController> _logger;
+        private readonly ILogger<RegisterController> _logger;
         private readonly GameContext _dbContext;
 
-        public PlayerController(ILogger<PlayerController> logger, IConfiguration config, IMemoryCache cache, GameContext dbContext)
+        public RegisterController(ILogger<RegisterController> logger, IConfiguration config, IMemoryCache cache, GameContext dbContext)
         {
             _logger = logger;
             _config = config;
@@ -41,7 +41,7 @@ namespace ImxServer.Controllers
         }
 
         [HttpPost("CreatePlayer")]
-        public async Task<IActionResult> CreatePlayer([FromBody] PlayerName playerName)
+        public async Task<IActionResult> CreatePlayer([FromBody] Player playerName)
         {
             var claimsIdentity = User.Identity as ClaimsIdentity;
             var claimAccount = claimsIdentity.FindFirst(JwtRegisteredClaimNames.Email);
