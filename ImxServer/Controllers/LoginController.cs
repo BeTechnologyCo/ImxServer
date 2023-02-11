@@ -1,4 +1,5 @@
 ﻿using ImxServer.Models;
+using ImxServer.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -19,12 +20,21 @@ namespace ImxServer.Controllers
         private readonly ILogger<LoginController> _logger;
         private const string message = "Welcome to the Imxverse, sign this message to authenticate {0}";
         private const string cacheConnectionKey = "GetConnection_{0}";
+        private readonly IMintService _mintService;
 
-        public LoginController(ILogger<LoginController> logger, IConfiguration config, IMemoryCache cache)
+        public LoginController(ILogger<LoginController> logger, IConfiguration config, IMemoryCache cache, IMintService mintService)
         {
             _logger = logger;
             _config = config;
             _cache = cache;
+            _mintService = mintService;
+        }
+
+        [AllowAnonymous]
+        [HttpGet("Mint")]
+        public async Task Mint()
+        {
+            await _mintService.Mint(1, "0x670cAcf48B685eB1AF8dc73C58AAbd30aA35958E");
         }
 
         [AllowAnonymous]

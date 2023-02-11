@@ -1,5 +1,6 @@
 using ImxServer.Hubs;
 using ImxServer.Models;
+using ImxServer.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -16,6 +17,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 builder.Services.AddAuthorization();
 builder.Services.AddMemoryCache();
+builder.Services.AddScoped<IMintService, MintService>();
 
 builder.Services.AddDbContext<GameContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("DatabaseConnection"), o => o.CommandTimeout(30)));
@@ -57,5 +59,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.MapHub<ChatHub>("/chatHub");
+app.MapHub<MonsterHub>("/monsterHub");
 
 app.Run();

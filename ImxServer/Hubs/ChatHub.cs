@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Imx.Sdk;
+using Microsoft.AspNetCore.SignalR;
 
 namespace ImxServer.Hubs
 {
@@ -7,6 +8,7 @@ namespace ImxServer.Hubs
         public async Task SendMessage(string user, string message)
         {
             await Clients.All.SendAsync("ReceiveMessage", user, message);
+           
         }
     }
 }
