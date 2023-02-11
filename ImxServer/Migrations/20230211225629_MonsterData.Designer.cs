@@ -2,6 +2,7 @@
 using ImxServer.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ImxServer.Migrations
 {
     [DbContext(typeof(GameContext))]
-    partial class GameContextModelSnapshot : ModelSnapshot
+    [Migration("20230211225629_MonsterData")]
+    partial class MonsterData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,33 +39,6 @@ namespace ImxServer.Migrations
                     b.HasKey("MonsterId");
 
                     b.ToTable("Monsters");
-
-                    b.HasData(
-                        new
-                        {
-                            MonsterId = 1,
-                            Name = "Fordin"
-                        },
-                        new
-                        {
-                            MonsterId = 2,
-                            Name = "Kroki"
-                        },
-                        new
-                        {
-                            MonsterId = 3,
-                            Name = "Devidin"
-                        },
-                        new
-                        {
-                            MonsterId = 4,
-                            Name = "Aerodin"
-                        },
-                        new
-                        {
-                            MonsterId = 5,
-                            Name = "Weastoat"
-                        });
                 });
 
             modelBuilder.Entity("ImxServer.Models.MonsterMove", b =>
@@ -104,73 +80,6 @@ namespace ImxServer.Migrations
                     b.HasKey("MoveId");
 
                     b.ToTable("Moves");
-
-                    b.HasData(
-                        new
-                        {
-                            MoveId = 1,
-                            Name = "Cut"
-                        },
-                        new
-                        {
-                            MoveId = 2,
-                            Name = "Ember"
-                        },
-                        new
-                        {
-                            MoveId = 3,
-                            Name = "Growl"
-                        },
-                        new
-                        {
-                            MoveId = 4,
-                            Name = "PoisonPowder"
-                        },
-                        new
-                        {
-                            MoveId = 5,
-                            Name = "QuickAttack"
-                        },
-                        new
-                        {
-                            MoveId = 6,
-                            Name = "SandAttack"
-                        },
-                        new
-                        {
-                            MoveId = 7,
-                            Name = "Scratch"
-                        },
-                        new
-                        {
-                            MoveId = 8,
-                            Name = "Sing"
-                        },
-                        new
-                        {
-                            MoveId = 9,
-                            Name = "SuperSonic"
-                        },
-                        new
-                        {
-                            MoveId = 10,
-                            Name = "Surf"
-                        },
-                        new
-                        {
-                            MoveId = 11,
-                            Name = "Tackle"
-                        },
-                        new
-                        {
-                            MoveId = 12,
-                            Name = "ThunderWave"
-                        },
-                        new
-                        {
-                            MoveId = 13,
-                            Name = "Vine"
-                        });
                 });
 
             modelBuilder.Entity("ImxServer.Models.Player", b =>
