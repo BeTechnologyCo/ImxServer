@@ -9,6 +9,13 @@ namespace ImxServer.Models
         public List<UserDto> users { get; set; }
     }
 
+    public class MintInfo
+    {
+
+        public string tokenId { get; set; }
+        public string userAddress { get; set; }
+    }
+
     public class RoyaltyDto
     {
         public int percentage { get; set; }

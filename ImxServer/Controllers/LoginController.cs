@@ -1,4 +1,5 @@
-﻿using ImxServer.Models;
+﻿using Imx.Sdk;
+using ImxServer.Models;
 using ImxServer.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -34,7 +35,14 @@ namespace ImxServer.Controllers
         [HttpGet("Mint")]
         public async Task Mint()
         {
-            await _mintService.Mint(1, "0x670cAcf48B685eB1AF8dc73C58AAbd30aA35958E");
+            Client client = new Client(new Config()
+            {
+                Environment = EnvironmentSelector.Sandbox // Or EnvironmentSelector.Mainnet
+            });
+            var result = await client.MintsApi.ListMintsAsync(1, orderBy: "token_id", direction: "desc", tokenAddress: _config["ContractAddress"]);
+            var last = result.Result.FirstOrDefault();
+            int tokenId = last != null ? int.Parse(last.Token.Data.TokenId) + 1 : 1;
+            await _mintService.Mint(tokenId, "0x38134d792AF74bBA3Fb7d23713b9Bc913dFBdeaE");
         }
 
         [AllowAnonymous]

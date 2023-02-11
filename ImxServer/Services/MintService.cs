@@ -44,78 +44,16 @@ namespace ImxServer.Services
             //    CoreContractAddress = "0x7917eDb51ecD6CdB3F9854c3cc593F33de10c623",
             //    ChainId = 5
             //};
-            var royalties = new RoyaltyDto()
-            {
-                percentage = 1,
-                recipient = "0x670cAcf48B685eB1AF8dc73C58AAbd30aA35958E"
-            };
-            var mintInfo = new MintDto();
-            mintInfo.auth_signature = string.Empty;
-            mintInfo.contract_address = _config["ContractAddress"];
-            mintInfo.royalties = new List<RoyaltyDto>();
-            mintInfo.royalties.Add(royalties);
-            mintInfo.users = new List<UserDto>();
-            var user = new UserDto()
-            {
-                user = addressUser,
-                tokens = new List<TokenDto>()
-            };
-            var token = new TokenDto()
-            {
-                id = tokenId.ToString(),
-                royalties = new List<RoyaltyDto>(),
-                blueprint = tokenId.ToString()
-            };
-            token.royalties.Add(royalties);
-            user.tokens.Add(token);
-
-            mintInfo.users.Add(user);
-
-            var info = JsonConvert.SerializeObject(mintInfo);
-            var utf8 = Encoding.UTF8;
-            byte[] utfBytes = utf8.GetBytes(info);
-
-            var key = _config["PrivateKey"];
-            var digest = new KeccakDigest(256);
-            digest.BlockUpdate(utfBytes, 0, utfBytes.Length);
-            var calculatedHash = new byte[digest.GetByteLength()];
-            digest.DoFinal(calculatedHash, 0);
-
-            // byte[] msgHash = hashing.CalculateHash(info);
-
-            var abiEncode = new ABIEncode();
-            var abiValue = new ABIValue("string", info);
-            var encodedValue = abiEncode.GetABIEncodedPacked(abiValue);
-
-            var hashing = new Sha3Keccack();
-            byte[] msgHash = hashing.CalculateHash(encodedValue);
-
-            var signer1 = new EthereumMessageSigner();
-            var ecKey = new EthECKey(key);
-
-
-
-            var hash = hashing.CalculateHash(info);
-
-            var msgSign = ecKey.SignAndCalculateV(StringToByteArray(hash));
-            mintInfo.auth_signature = EthECDSASignature.CreateStringSignature(msgSign);
-
-            //var hexPrivateKey = "0xae78c8b502571dba876742437f8bc78b689cf8518356c0921393d89caaf284ce";
-            //var signingKey = new EthECKey(hexPrivateKey);
-            //var hash = hashing.CalculateHash("bou");
-            //var signature = signingKey.SignAndCalculateV(StringToByteArray(hash));
-            //var eresult = "0x" + HexByteConvertorExtensions.ToHex(signature.R, false).PadLeft(64, '0') +
-            //    HexByteConvertorExtensions.ToHex(signature.S, false).PadLeft(64, '0') +
-            //    HexByteConvertorExtensions.ToHex(signature.V, false);
-
-            var postInfo = new List<MintDto>();
-            postInfo.Add(mintInfo);
+            MintInfo infos = new MintInfo();
+            infos.tokenId = tokenId.ToString();
+            infos.userAddress = addressUser;
+           
 
             using (var client = new HttpClient())
             {
-                var url = "https://api.sandbox.x.immutable.com/v2/mints";
+                var url = "http://localhost:3000/api/mint";
 
-                var response = await client.PostAsJsonAsync(url, postInfo);
+                var response = await client.PostAsJsonAsync(url, infos);
 
                 if (response.IsSuccessStatusCode)
                 {
