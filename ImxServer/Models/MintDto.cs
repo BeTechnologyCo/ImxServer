@@ -14,6 +14,8 @@ namespace ImxServer.Models
 
         public string tokenId { get; set; }
         public string userAddress { get; set; }
+        public string monsterId { get; set; }
+        public string name { get; set; }
     }
 
     public class RoyaltyDto

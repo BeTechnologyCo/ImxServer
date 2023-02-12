@@ -138,6 +138,7 @@ new Move
         public int MonsterId { get; set; }
         public Monster Monster { get; set; }
         public int Level { get; set; }
+        public int Exp { get; set; }
     }
 
     [Index(nameof(TokenId), nameof(MoveId), IsUnique = true)]

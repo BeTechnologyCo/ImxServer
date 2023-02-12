@@ -33,20 +33,13 @@ namespace ImxServer.Services
         }
 
 
-        public async Task Mint(int tokenId, string addressUser)
+        public async Task Mint(int tokenId, string addressUser, Monster monster)
         {
-
-            //Environment environment = new Environment
-            //{
-            //    BaseApiPath = "https://api.sandbox.x.immutable.com",
-            //    EthereumRpc = "https://eth-goerli.alchemyapi.io/v2/",
-            //    RegistrationContractAddress = "0x1C97Ada273C9A52253f463042f29117090Cd7D83",
-            //    CoreContractAddress = "0x7917eDb51ecD6CdB3F9854c3cc593F33de10c623",
-            //    ChainId = 5
-            //};
             MintInfo infos = new MintInfo();
             infos.tokenId = tokenId.ToString();
             infos.userAddress = addressUser;
+            infos.monsterId = monster.MonsterId.ToString();
+            infos.name = monster.Name;
            
 
             using (var client = new HttpClient())
