@@ -66,17 +66,7 @@ namespace ImxServer.Controllers
 
             _dbContext.Tokens.Add(token);
 
-            //getMoves.ForEach(m =>
-            //{
-            //    var moveMonster = new MonsterMove()
-            //    {
-            //        TokenId = tokenId,
-            //        MoveId = m.MoveId
-            //    };
-            //    _dbContext.MonsterMoves.Add(moveMonster);
-            //});
             _dbContext.SaveChanges();
-            //await Clients.Caller.SendAsync("Minted");
 
             return await GetMonsters();
 
@@ -90,19 +80,6 @@ namespace ImxServer.Controllers
             var claimAccount = claimsIdentity.FindFirst(JwtRegisteredClaimNames.Name);
 
             var getMonster = _dbContext.Tokens.Where(a => a.TokenId == monsterDto.TokenId).FirstOrDefault();
-            //if (monsterDto.Moves?.Count > 0)
-            //{
-            //    var getMoves = _dbContext.Moves.Where(m => monsterDto.Moves.Contains(m.Name)).ToList();
-            //    getMoves.ForEach(m =>
-            //    {
-            //        var moveMonster = new MonsterMove()
-            //        {
-            //            TokenId = monsterDto.TokenId,
-            //            MoveId = m.MoveId
-            //        };
-            //        _dbContext.MonsterMoves.Add(moveMonster);
-            //    });
-            //}
 
             getMonster.Level = monsterDto.Level;
             getMonster.Exp = monsterDto.Exp;
@@ -134,6 +111,16 @@ namespace ImxServer.Controllers
             }
 
             return new List<Token>();
+
+        }
+
+        [HttpPost("TransferMonsters")]
+        public async Task<List<Token>> TransferMonster([FromBody] TransferMonsterDto monsterDto)
+        {
+            var player = _dbContext.Players.Where(a => EF.Functions.ILike(a.Name, $"{monsterDto.UserName}")).FirstOrDefault();
+
+            await _mintService.Transfer(monsterDto.TokenId, player.Account);
+            return await GetMonsters();
 
         }
     }

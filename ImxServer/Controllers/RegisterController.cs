@@ -41,6 +41,12 @@ namespace ImxServer.Controllers
             return player;
         }
 
+        [HttpGet("GetUsers")]
+        public List<string> GetUsers()
+        {
+           return _dbContext.Players.Select(x=>x.Name).ToList();
+        }
+
         [HttpPost("CreatePlayer")]
         public async Task<IActionResult> CreatePlayer([FromBody] PlayerName playerName)
         {

@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Numerics;
 using System.Text;
+using System.Threading;
 using Imx.Sdk;
 using ImxServer.Controllers;
 using ImxServer.Models;
@@ -40,7 +41,7 @@ namespace ImxServer.Services
             infos.userAddress = addressUser;
             infos.monsterId = monster.MonsterId.ToString();
             infos.name = monster.Name;
-           
+
 
             using (var client = new HttpClient())
             {
@@ -80,15 +81,33 @@ namespace ImxServer.Services
                 : BigInteger.Parse(v) : BigInteger.Zero;
         }
 
-        //      // used chained with serializeEthSignature. serializeEthSignature(deserializeSignature(...))
-        //      private deserializeSignature(sig: string, size = 64) :  {
-        //          sig = encUtils.removeHexPrefix(sig);
-        //          return {
-        //          r: new BN(sig.substring(0, size), 'hex'),
-        //  s: new BN(sig.substring(size, size * 2), 'hex'),
-        //  recoveryParam: importRecoveryParam(sig.substring(size * 2, size * 2 + 2)),
-        //};
-        //      }
+        public async Task Transfer(int tokenId, string addressUser)
+        {
+            SendMonsterDto infos = new SendMonsterDto();
+            infos.TokenId = tokenId.ToString();
+            infos.ReceiverAddress = addressUser;
+
+            using (var client = new HttpClient())
+            {
+                var url = "http://localhost:3000/api/transfer";
+
+                var response = await client.PostAsJsonAsync(url, infos);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var res = await response.Content.ReadAsStringAsync();
+
+                    Debug.WriteLine("token trasnfered " + res);
+
+                    //return res;
+                }
+                else
+                {
+                    throw new InvalidOperationException("Error server " + response.ReasonPhrase);
+                }
+            }
+        }
+
 
     }
 }
