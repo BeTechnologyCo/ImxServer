@@ -6,7 +6,6 @@ namespace ImxServer.Models
 
 		public string Name { get; set; }
         public int Level { get; set; }
-        public List<string> Moves { get; set; }
     }
 
     public class UpdateMonsterDto
@@ -15,7 +14,6 @@ namespace ImxServer.Models
         public int TokenId { get; set; }
         public int Level { get; set; }
         public int Exp { get; set; }
-        public List<string> Moves { get; set; }
     }
 }
 
