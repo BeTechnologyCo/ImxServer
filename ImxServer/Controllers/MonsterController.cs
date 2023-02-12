@@ -51,7 +51,7 @@ namespace ImxServer.Controllers
             int tokenId = last != null ? int.Parse(last.Token.Data.TokenId) + 1 : 1;
 
             var getMonster = _dbContext.Monsters.Where(a => EF.Functions.ILike(a.Name, $"{monsterDto.Name.ToLower()}")).FirstOrDefault();
-            var getMoves = _dbContext.Moves.Where(m => monsterDto.Moves.Contains(m.Name)).ToList();
+            //var getMoves = _dbContext.Moves.Where(m => monsterDto.Moves.Contains(m.Name)).ToList();
             await _mintService.Mint(tokenId, claimAccount.Value, getMonster);
 
 
@@ -66,19 +66,19 @@ namespace ImxServer.Controllers
 
             _dbContext.Tokens.Add(token);
 
-            getMoves.ForEach(m =>
-            {
-                var moveMonster = new MonsterMove()
-                {
-                    TokenId = tokenId,
-                    MoveId = m.MoveId
-                };
-                _dbContext.MonsterMoves.Add(moveMonster);
-            });
+            //getMoves.ForEach(m =>
+            //{
+            //    var moveMonster = new MonsterMove()
+            //    {
+            //        TokenId = tokenId,
+            //        MoveId = m.MoveId
+            //    };
+            //    _dbContext.MonsterMoves.Add(moveMonster);
+            //});
             _dbContext.SaveChanges();
             //await Clients.Caller.SendAsync("Minted");
 
-          return  await GetMonsters();
+            return await GetMonsters();
 
         }
 
@@ -90,19 +90,19 @@ namespace ImxServer.Controllers
             var claimAccount = claimsIdentity.FindFirst(JwtRegisteredClaimNames.Name);
 
             var getMonster = _dbContext.Tokens.Where(a => a.TokenId == monsterDto.TokenId).FirstOrDefault();
-            if (monsterDto.Moves?.Count > 0)
-            {
-                var getMoves = _dbContext.Moves.Where(m => monsterDto.Moves.Contains(m.Name)).ToList();
-                getMoves.ForEach(m =>
-                {
-                    var moveMonster = new MonsterMove()
-                    {
-                        TokenId = monsterDto.TokenId,
-                        MoveId = m.MoveId
-                    };
-                    _dbContext.MonsterMoves.Add(moveMonster);
-                });
-            }
+            //if (monsterDto.Moves?.Count > 0)
+            //{
+            //    var getMoves = _dbContext.Moves.Where(m => monsterDto.Moves.Contains(m.Name)).ToList();
+            //    getMoves.ForEach(m =>
+            //    {
+            //        var moveMonster = new MonsterMove()
+            //        {
+            //            TokenId = monsterDto.TokenId,
+            //            MoveId = m.MoveId
+            //        };
+            //        _dbContext.MonsterMoves.Add(moveMonster);
+            //    });
+            //}
 
             getMonster.Level = monsterDto.Level;
             getMonster.Exp = monsterDto.Exp;
@@ -133,7 +133,7 @@ namespace ImxServer.Controllers
                 return monsters;
             }
 
-         return new List<Token>();
+            return new List<Token>();
 
         }
     }
