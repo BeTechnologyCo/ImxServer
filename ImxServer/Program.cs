@@ -22,6 +22,7 @@ builder.Services.AddScoped<IMintService, MintService>();
 builder.Services.AddDbContext<GameContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("DatabaseConnection"), o => o.CommandTimeout(30)));
 
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -51,6 +52,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<GameContext>();
+    // use context
+    dbContext.Database.Migrate();
+}
+
 
 app.UseHttpsRedirection();
 
