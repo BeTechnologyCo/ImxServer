@@ -45,8 +45,8 @@ namespace ImxServer.Controllers
             {
                 Environment = EnvironmentSelector.Sandbox // Or EnvironmentSelector.Mainnet
             });
-            var result = await client.MintsApi.ListMintsAsync(1, orderBy: "token_id", direction: "desc", tokenAddress: _config["ContractAddress"]);
-            var last = result.Result.FirstOrDefault();
+            var result = await client.MintsApi.ListMintsAsync(1000, orderBy: "token_id", direction: "desc", tokenAddress: _config["ContractAddress"]);
+            var last = result.Result.OrderBy(x=> int.Parse(x.Token.Data.TokenId)).LastOrDefault();
             // get next tokenId
             int tokenId = last != null ? int.Parse(last.Token.Data.TokenId) + 1 : 1;
 
