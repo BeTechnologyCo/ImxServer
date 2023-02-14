@@ -9,6 +9,13 @@
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
   <ItemGroup>
+    <Content Remove="wwwroot\Build\webgl.data.gz" />
+    <Content Remove="wwwroot\Build\webgl.framework.js.gz" />
+    <Content Remove="wwwroot\Build\webgl.loader.js" />
+    <Content Remove="wwwroot\Build\webgl.wasm.gz" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CompressedStaticFiles" Version="2.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.2">
@@ -41,5 +48,19 @@
     <None Include="wwwroot\images\monsters\4_0.png" />
     <None Include="wwwroot\images\monsters\5_0.png" />
     <None Include="wwwroot\images\monsters\6_0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\Build\webgl.data.gz">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Build\webgl.framework.js.gz">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Build\webgl.loader.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Build\webgl.wasm.gz">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

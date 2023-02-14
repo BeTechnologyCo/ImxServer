@@ -1,3 +1,4 @@
+using CompressedStaticFiles;
 using ImxServer.Hubs;
 using ImxServer.Models;
 using ImxServer.Services;
@@ -5,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using System.Reflection.PortableExecutable;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -65,7 +67,37 @@ using (var scope = app.Services.CreateScope())
     dbContext.Database.Migrate();
 }
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+
+app.UseDefaultFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = context =>
+    {
+        IHeaderDictionary headers = context.Context.Response.Headers;
+        string contentType = headers["Content-Type"];
+        if (contentType == "application/x-gzip")
+        {
+            if (context.File.Name.EndsWith("js.gz"))
+            {
+                contentType = "application/javascript";
+            }
+            else if (context.File.Name.EndsWith("css.gz"))
+            {
+                contentType = "text/css";
+            }
+            else if (context.File.Name.EndsWith("wasm.gz"))
+            {
+                contentType = "application/wasm";
+            }
+            headers.Add("Content-Encoding", "gzip");
+            headers["Content-Type"] = contentType;
+            if (context.File.Name.EndsWith("data.gz"))
+            {
+                headers.Remove("Content-Type");
+            }
+        }
+    }
+});
 
 // global cors policy
 app.UseCors(x => x
@@ -76,6 +108,7 @@ app.UseCors(x => x
 
 app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllers();
 app.MapHub<ChatHub>("/chatHub");
