@@ -53,10 +53,10 @@ namespace ImxServer.Controllers
         {
             if (id < 1 || id > 6)
             {
-                var imageNF = System.IO.File.OpenRead("Assets/Monsters/0_0.png");
+                var imageNF = System.IO.File.OpenRead("wwwroot/images/monsters/0_0.png");
                 return File(imageNF, "image/jpeg");
             }
-            var image = System.IO.File.OpenRead($"Assets/Monsters/{id}_0.png");
+            var image = System.IO.File.OpenRead($"wwwroot/images/monsters/{id}_0.png");
             return File(image, "image/jpeg");
         }
 

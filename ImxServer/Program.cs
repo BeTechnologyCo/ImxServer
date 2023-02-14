@@ -64,6 +64,7 @@ using (var scope = app.Services.CreateScope())
     dbContext.Database.Migrate();
 }
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 
 app.UseAuthentication();
 app.UseAuthorization();

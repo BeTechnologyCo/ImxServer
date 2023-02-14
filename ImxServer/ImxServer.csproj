@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -32,5 +32,14 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\images\monsters\0_0.png" />
+    <None Include="wwwroot\images\monsters\1_0.png" />
+    <None Include="wwwroot\images\monsters\2_0.png" />
+    <None Include="wwwroot\images\monsters\3_0.png" />
+    <None Include="wwwroot\images\monsters\4_0.png" />
+    <None Include="wwwroot\images\monsters\5_0.png" />
+    <None Include="wwwroot\images\monsters\6_0.png" />
   </ItemGroup>
 </Project>
