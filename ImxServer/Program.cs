@@ -3,6 +3,7 @@ using ImxServer.Models;
 using ImxServer.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -46,6 +47,9 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
+var logger = app.Services.GetRequiredService<ILogger<ErrorDetails>>();
+app.ConfigureExceptionHandler(logger);
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -59,8 +63,6 @@ using (var scope = app.Services.CreateScope())
     // use context
     dbContext.Database.Migrate();
 }
-
-
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
