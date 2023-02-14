@@ -19,6 +19,7 @@ builder.Services.AddSignalR();
 builder.Services.AddAuthorization();
 builder.Services.AddMemoryCache();
 builder.Services.AddScoped<IMintService, MintService>();
+builder.Services.AddCors();
 
 builder.Services.AddDbContext<GameContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("DatabaseConnection"), o => o.CommandTimeout(30)));
@@ -65,6 +66,13 @@ using (var scope = app.Services.CreateScope())
 }
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+// global cors policy
+app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true) // allow any origin
+    .AllowCredentials()); // allow credentials
 
 app.UseAuthentication();
 app.UseAuthorization();
