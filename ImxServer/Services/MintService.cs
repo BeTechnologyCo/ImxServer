@@ -89,7 +89,7 @@ namespace ImxServer.Services
 
             using (var client = new HttpClient())
             {
-                var url = _config["MintService"] +"/api/transfer";
+                var url = _config["MintService"] + "/api/transfer";
 
                 var response = await client.PostAsJsonAsync(url, infos);
 
