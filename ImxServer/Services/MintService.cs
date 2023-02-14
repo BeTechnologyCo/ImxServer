@@ -45,7 +45,7 @@ namespace ImxServer.Services
 
             using (var client = new HttpClient())
             {
-                var url = "http://localhost:3000/api/mint";
+                var url = _config["MintService"] + "/api/mint";
 
                 var response = await client.PostAsJsonAsync(url, infos);
 
@@ -89,7 +89,7 @@ namespace ImxServer.Services
 
             using (var client = new HttpClient())
             {
-                var url = "http://localhost:3000/api/transfer";
+                var url = _config["MintService"] +"/api/transfer";
 
                 var response = await client.PostAsJsonAsync(url, infos);
 
